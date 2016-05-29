@@ -1,5 +1,9 @@
+import os
 import sys
-sys.path.insert(0, './helloworld')
+
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+sys.path.insert(0, os.path.join(CURRENT_DIR, 'helloworld'))
 from helloworld import wsgi
 
 

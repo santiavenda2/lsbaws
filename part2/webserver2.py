@@ -1,6 +1,6 @@
-# Tested with Python 2.7.9, Linux & Mac OS X
+# Tested with Python 3.5.1, Linux
 import socket
-import StringIO
+from io import StringIO
 import sys
 
 
@@ -42,7 +42,7 @@ class WSGIServer(object):
             self.handle_one_request()
 
     def handle_one_request(self):
-        self.request_data = request_data = self.client_connection.recv(1024)
+        self.request_data = request_data = self.client_connection.recv(1024).decode(encoding='utf-8')
         # Print formatted request data a la 'curl -v'
         print(''.join(
             '< {line}\n'.format(line=line)
@@ -79,7 +79,7 @@ class WSGIServer(object):
         # Required WSGI variables
         env['wsgi.version']      = (1, 0)
         env['wsgi.url_scheme']   = 'http'
-        env['wsgi.input']        = StringIO.StringIO(self.request_data)
+        env['wsgi.input']        = StringIO(self.request_data)
         env['wsgi.errors']       = sys.stderr
         env['wsgi.multithread']  = False
         env['wsgi.multiprocess'] = False
@@ -111,13 +111,13 @@ class WSGIServer(object):
                 response += '{0}: {1}\r\n'.format(*header)
             response += '\r\n'
             for data in result:
-                response += data
+                response += data.decode(encoding='utf-8')
             # Print formatted response data a la 'curl -v'
             print(''.join(
                 '> {line}\n'.format(line=line)
                 for line in response.splitlines()
             ))
-            self.client_connection.sendall(response)
+            self.client_connection.sendall(response.encode(encoding="utf-8"))
         finally:
             self.client_connection.close()
 
