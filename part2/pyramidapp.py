@@ -4,7 +4,7 @@ from pyramid.response import Response
 
 def hello_world(request):
     return Response(
-        'Hello world from Pyramid!\n',
+        'Hello world from Pyramid!\nPrueba iso-8859-1: áéíóúñ',
         content_type='text/plain',
     )
 

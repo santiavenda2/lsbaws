@@ -42,7 +42,7 @@ class WSGIServer(object):
             self.handle_one_request()
 
     def handle_one_request(self):
-        self.request_data = request_data = self.client_connection.recv(1024).decode(encoding='utf-8')
+        self.request_data = request_data = self.client_connection.recv(1024).decode(encoding='iso-8859-1')
         # Print formatted request data a la 'curl -v'
         print(''.join(
             '< {line}\n'.format(line=line)
@@ -111,13 +111,13 @@ class WSGIServer(object):
                 response += '{0}: {1}\r\n'.format(*header)
             response += '\r\n'
             for data in result:
-                response += data.decode(encoding='utf-8')
+                response += data.decode(encoding='iso-8859-1')
             # Print formatted response data a la 'curl -v'
             print(''.join(
                 '> {line}\n'.format(line=line)
                 for line in response.splitlines()
             ))
-            self.client_connection.sendall(response.encode(encoding="utf-8"))
+            self.client_connection.sendall(response.encode(encoding='iso-8859-1'))
         finally:
             self.client_connection.close()
 
